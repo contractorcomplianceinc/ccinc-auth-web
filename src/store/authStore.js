@@ -1,18 +1,7 @@
-/**
- * Template Store
- * templateStore.js
- *
- * Andrew Lampert
- * 27 May 2020
- *
- * This was written to help speed up setting up additional stores where needed.
- * This store is not to be included in the vuex.js file, but the stores created from this file can be.
- *
- * In order to import the store, import this file into vuex.js, and add the import to Vuex.Store({ modules: { ... } })
- */
-
 const authStore = {
-    state: {},
+    state: {
+        token: null
+    },
     getters: {},
     actions: {
         /**
@@ -37,13 +26,33 @@ const authStore = {
             //         });
             // });
         },
-        AUTHENTICATE: ({dispatch}, data) => {
-            let path = "v2.0/api/authenticate";
+        AUTHENTICATE: ({dispatch, commit}, data) => {
+            let path = "v2.0/auth/authenticate";
 
-            return dispatch("_POST", path, data); 
+            return dispatch("_POST", {
+                path,
+                params: data
+            })
+            .then(res => {
+                commit("SET_AUTH_BEARER", res.data);
+                return res;
+            }); 
+        },
+        AUTHORIZE: ({dispatch}, data) =>{
+            let path = "oauth/authorize";
+
+            return dispatch("_POST", {
+                path,
+                params: data
+            })
+            .then(res => {
+                return res;
+            }); 
         }
     },
-    mutations: {},
+    mutations: {
+       
+    },
 };
 
 export default authStore;

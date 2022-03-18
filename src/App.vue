@@ -8,17 +8,20 @@
             <v-spacer></v-spacer>
 
             <!-- Stuff after -->
-            <v-btn to="/">
-                Home
-            </v-btn>
- 
-            <v-btn to="/login">
-                Login
-            </v-btn>
+            <v-btn to="/"> Home </v-btn>
+
+            <v-btn to="/login"> Login </v-btn>
         </v-app-bar>
 
         <v-main>
+            <v-btn @click="currentUser()"> Current User Info </v-btn>
+
             <router-view />
+
+            <h1>Responses</h1>
+            <p v-for="(response, index) in $store.getters.responses" :key="index">
+                {{ response }}
+            </p>
         </v-main>
     </v-app>
 </template>
@@ -31,8 +34,10 @@ export default {
         //
     }),
 
-    mounted(){
-        // this.$store.dispatch("GET_CSRF");
-    }
+    methods: {
+        currentUser() {
+            return this.$store.dispatch("_GET", "v2.0/users/current");
+        },
+    },
 };
 </script>

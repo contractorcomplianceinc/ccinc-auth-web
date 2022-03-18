@@ -11,9 +11,11 @@ var headers = {
 var baseUrl = process.env.VUE_APP_ROOT_API;
 
 var httpService = {
-    post(path, params) {
-        return axios.post(baseUrl + path, params, headers);
-    },
+    // post(path, params) {
+    //     console.log("POST", path, params);
+    //     // return axios.post(baseUrl + path, params, headers);
+    //     return axios.post(baseUrl + path, params);
+    // },
     get(path, params) {
         return axios.get(baseUrl + path, {
             headers: headers,
