@@ -16,6 +16,10 @@
         <v-main>
             <v-btn @click="currentUser()"> Current User Info </v-btn>
 
+            <v-btn @click="$store.dispatch('OAUTH_AUTHORIZE')">Authorize</v-btn>
+
+            <v-btn @click="oauthToken()">OAuth Token</v-btn>
+
             <router-view />
 
             <h1>Responses</h1>
@@ -38,6 +42,13 @@ export default {
         currentUser() {
             return this.$store.dispatch("_GET", "v2.0/users/current");
         },
+        oauthToken()
+        {
+            this.$store.dispatch('OAUTH_TOKEN')
+                .then(res => {
+                    console.log(res);
+                });
+        }
     },
 };
 </script>

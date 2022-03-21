@@ -18,13 +18,15 @@ const httpStore = {
     },
     // Use `dispatch` to run these items
     actions: {
-        _GET: ({ state, commit }, path, params) => {
+        _GET: ({ state, commit }, data) => {
+            let path = data.path;
+            let params = data.params;
+
             let url = process.env.VUE_APP_ROOT_API + path;
 
-            return new Promise((resolve) => {
-                httpService.get(path).then((res) => {
-                    resolve(res);
-                });
+            return axios.get(url, {
+                // headers: headers,
+                params: params,
             });
         },
         _POST: ({ state, commit }, data) => {
