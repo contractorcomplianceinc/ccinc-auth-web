@@ -21,20 +21,34 @@ const httpStore = {
         _GET: ({ state, commit }, data) => {
             let path = data.path;
             let params = data.params;
+            let headers = data.headers;
 
             let url = process.env.VUE_APP_ROOT_API + path;
 
             return axios.get(url, {
-                // headers: headers,
+                headers: headers,
                 params: params,
+            })
+            .then(res => {
+                commit("RECORD_RESPONSE", {
+                    method: "get",
+                    url,
+                    params,
+                    response: res,
+                });
+                return res; 
+            })
+            .catch(error => {
+                console.debug("_GET error", error.request);
             });
         },
         _POST: ({ state, commit }, data) => {
             let path = data.path;
             let params = data.params;
+            let headers = data.headers;
             let url = process.env.VUE_APP_ROOT_API + path;
 
-            return axios.post(url, params).then((res) => {
+            return axios.post(url, params, headers).then((res) => {
                 commit("RECORD_RESPONSE", {
                     method: "post",
                     url,
@@ -54,7 +68,6 @@ const httpStore = {
         },
         SET_AUTH_BEARER: (state, token) => {
             axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-            console.log("axios headers", axios.defaults.headers.common);
         },
     },
 };

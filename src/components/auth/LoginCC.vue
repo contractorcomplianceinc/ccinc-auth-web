@@ -35,7 +35,7 @@ export default {
         submit: function () {
             this.$store.dispatch("AUTHENTICATE", this.credentials)
             .then(res => {
-                this.$router.push({ path: '/authorize'  });
+                // this.$router.push({ path: '/authorize'  });
             })
             .catch((error) => {
                 console.error(error.response);

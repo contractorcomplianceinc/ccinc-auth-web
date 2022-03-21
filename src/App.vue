@@ -14,11 +14,13 @@
         </v-app-bar>
 
         <v-main>
-            <v-btn @click="currentUser()"> Current User Info </v-btn>
+            <!-- <v-btn @click="currentUser()"> Current User Info </v-btn>
 
             <v-btn @click="$store.dispatch('OAUTH_AUTHORIZE')">Authorize</v-btn>
 
             <v-btn @click="oauthToken()">OAuth Token</v-btn>
+
+            <v-btn @click="$store.dispatch('OAUTH_CLIENTS')">OAuth Clients</v-btn> -->
 
             <router-view />
 
@@ -42,7 +44,9 @@ export default {
 
     methods: {
         currentUser() {
-            return this.$store.dispatch("_GET", "v2.0/users/current");
+            return this.$store.dispatch("_GET", {
+                path: "v2.0/users/current"
+            });
         },
         oauthToken()
         {

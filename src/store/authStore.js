@@ -1,8 +1,17 @@
 const authStore = {
     state: {
-        token: null,
+        authenticated: false,
     },
-    getters: {},
+    getters: {
+        isAuthenticated: (state) => {
+            return state.authenticated;
+        },
+    },
+    mutations: {
+        SET_AUTHENTICATED: (state, value) => {
+            state.authenticated = value;
+        },
+    },
     actions: {
         /**
          * Gets the CSRF Token from the server
@@ -32,26 +41,50 @@ const authStore = {
             return dispatch("_POST", {
                 path,
                 params: data,
+                maxRedirects: 0,
             }).then((res) => {
                 commit("SET_AUTH_BEARER", res.data);
+                commit("SET_AUTHENTICATED", true);
                 return res;
             });
         },
         OAUTH_AUTHORIZE: ({ dispatch }) => {
             let path = "oauth/authorize";
-            return dispatch("_GET", {
-                path: path,
-                params: {
-                    client_id: process.env.VUE_APP_API_CLIENT_ID,
-                    redirect_uri: process.envVUE_APP_API_CLIENT_REDIRECT,
-                    response_type: "code",
-                    scope: "*",
-                    state: "state",
-                },
-            }).then((res) => {
-                console.log("/oauth/authorize", res);
-                return res;
-            });
+
+            let params = {
+                client_id: process.env.VUE_APP_API_CLIENT_ID,
+                redirect_uri: process.env.VUE_APP_API_CLIENT_REDIRECT,
+                response_type: "code",
+                scope: "*",
+                state: "state",
+            };
+
+            let urlParams = Object.keys(params)
+                .map((key, index) => {
+                    let val = params[key];
+                    // console.log(key, val);
+                    return key + "=" + encodeURIComponent(val);
+                })
+                .join("&");
+
+            let url = process.env.VUE_APP_ROOT_API + path + "?" + urlParams;
+
+            window.location = url;
+
+            // return dispatch("_GET", {
+            //     path: path,
+            //     params: params,
+            //     headers: {
+            //         Accept: "*/*",
+            //     },
+            // }).then((res) => {
+            //     console.log("/oauth/authorize", res);
+            //     return res;
+            // })
+            // .catch(error => {
+            //     console.warn("/oauth/authorize", error, error.request);
+            //     return error;
+            // });
         },
         OAUTH_TOKEN: ({ dispatch }) => {
             let path = "oauth/token";
@@ -61,18 +94,23 @@ const authStore = {
                     client_secret: process.env.VUE_APP_API_CLIENT_SECRET,
                     client_id: process.env.VUE_APP_API_CLIENT_ID,
                     grant_type: "client_credentials",
-                    scope: ""
-                    // redirect_uri: process.env("VUE_APP_API_CLIENT_REDIRECT"),
-                    // response_type: "code",
-                    // state: "state",
+                    scope: "",
                 },
             }).then((res) => {
                 console.log("/oauth/token", res);
                 return res;
             });
         },
+        OAUTH_CLIENTS: ({ dispatch }) => {
+            let path = "oauth/clients";
+            return dispatch("_GET", {
+                path: path,
+            }).then((res) => {
+                console.log("OAUTH_CLIENTS", res);
+                return res;
+            });
+        },
     },
-    mutations: {},
 };
 
 export default authStore;
