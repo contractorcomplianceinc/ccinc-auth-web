@@ -22,17 +22,19 @@
 
             <router-view />
 
-            <h1>Responses</h1>
-            <p v-for="(response, index) in $store.getters.responses" :key="index">
-                {{ response }}
-            </p>
+            <ResponsesTable />
         </v-main>
     </v-app>
 </template>
 
 <script>
+import ResponsesTable from "@/components/debugging/ResponsesTable";
 export default {
     name: "App",
+
+    components: {
+        ResponsesTable
+    },
 
     data: () => ({
         //
