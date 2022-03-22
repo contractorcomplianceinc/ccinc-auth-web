@@ -6,6 +6,29 @@ const authStore = {
         isAuthenticated: (state) => {
             return state.authenticated;
         },
+        authUrl: () => {
+            let path = "oauth/authorize";
+
+            let params = {
+                client_id: process.env.VUE_APP_API_CLIENT_ID,
+                redirect_uri: process.env.VUE_APP_API_CLIENT_REDIRECT,
+                response_type: "code",
+                scope: "*",
+                state: "state",
+            };
+
+            let urlParams = Object.keys(params)
+                .map((key, index) => {
+                    let val = params[key];
+                    // console.log(key, val);
+                    return key + "=" + encodeURIComponent(val);
+                })
+                .join("&");
+
+            let url = process.env.VUE_APP_ROOT_API + path + "?" + urlParams;
+
+            return url;
+        }
     },
     mutations: {
         SET_AUTHENTICATED: (state, value) => {
@@ -51,30 +74,18 @@ const authStore = {
         /**
          * https://laravel.com/docs/9.x/passport#requesting-tokens-redirecting-for-authorization
          */
-        OAUTH_AUTHORIZE: ({ dispatch }) => {
-            let path = "oauth/authorize";
-
-            let params = {
-                client_id: process.env.VUE_APP_API_CLIENT_ID,
-                redirect_uri: process.env.VUE_APP_API_CLIENT_REDIRECT,
-                response_type: "code",
-                scope: "*",
-                state: "state",
-            };
-
-            let urlParams = Object.keys(params)
-                .map((key, index) => {
-                    let val = params[key];
-                    // console.log(key, val);
-                    return key + "=" + encodeURIComponent(val);
-                })
-                .join("&");
-
-            let url = process.env.VUE_APP_ROOT_API + path + "?" + urlParams;
+        OAUTH_AUTHORIZE: ({ getters, dispatch }) => {
+            let url = getters.authUrl;
 
             // Redirect the user to the URL
             window.location = url;
 
+            // var popup = window.open(url);
+
+            // When the popup has fully loaded, if not blocked by a popup blocker:
+
+            // This does nothing, assuming the window hasn't changed its location.
+            // popup.postMessage("The user is 'bob' and the password is 'secret'", url);
         },
         OAUTH_TOKEN: ({ dispatch }) => {
             let path = "oauth/token";
@@ -94,7 +105,7 @@ const authStore = {
         /**
          * https://laravel.com/docs/9.x/passport#requesting-tokens-converting-authorization-codes-to-access-tokens
          */
-        OAUTH_TOKEN_CODE: ({dispatch, commit}, code) => {
+        OAUTH_TOKEN_CODE: ({ dispatch, commit }, code) => {
             let path = "oauth/token";
             return dispatch("_POST", {
                 path: path,
