@@ -68,6 +68,7 @@ const httpStore = {
         },
         SET_AUTH_BEARER: (state, token) => {
             axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+            axios.defaults.headers.common['X-XSRF-TOKEN'] = token;
         },
     },
 };

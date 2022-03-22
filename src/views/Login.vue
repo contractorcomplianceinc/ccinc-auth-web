@@ -1,8 +1,6 @@
 <template>
     <div class="container">
         <LoginCC />
-
-        <v-btn @click="$store.dispatch('OAUTH_AUTHORIZE')">Authorize</v-btn>
     </div>
 </template>
 

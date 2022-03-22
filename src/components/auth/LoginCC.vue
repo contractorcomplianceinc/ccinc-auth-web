@@ -24,7 +24,7 @@ export default {
             credentials: {
                 // email: null,
                 // password: null,
-                email: "owner1@hiring-org.ca",
+                email: "owner1@contractor.ca",
                 password: "password",
             },
             showError: false,

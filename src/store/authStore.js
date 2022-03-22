@@ -48,6 +48,9 @@ const authStore = {
                 return res;
             });
         },
+        /**
+         * https://laravel.com/docs/9.x/passport#requesting-tokens-redirecting-for-authorization
+         */
         OAUTH_AUTHORIZE: ({ dispatch }) => {
             let path = "oauth/authorize";
 
@@ -69,22 +72,9 @@ const authStore = {
 
             let url = process.env.VUE_APP_ROOT_API + path + "?" + urlParams;
 
+            // Redirect the user to the URL
             window.location = url;
 
-            // return dispatch("_GET", {
-            //     path: path,
-            //     params: params,
-            //     headers: {
-            //         Accept: "*/*",
-            //     },
-            // }).then((res) => {
-            //     console.log("/oauth/authorize", res);
-            //     return res;
-            // })
-            // .catch(error => {
-            //     console.warn("/oauth/authorize", error, error.request);
-            //     return error;
-            // });
         },
         OAUTH_TOKEN: ({ dispatch }) => {
             let path = "oauth/token";
@@ -98,6 +88,27 @@ const authStore = {
                 },
             }).then((res) => {
                 console.log("/oauth/token", res);
+                return res;
+            });
+        },
+        /**
+         * https://laravel.com/docs/9.x/passport#requesting-tokens-converting-authorization-codes-to-access-tokens
+         */
+        OAUTH_TOKEN_CODE: ({dispatch, commit}, code) => {
+            let path = "oauth/token";
+            return dispatch("_POST", {
+                path: path,
+                params: {
+                    // client_secret: process.env.VUE_APP_API_CLIENT_SECRET,
+                    grant_type: "authorization_code",
+                    client_id: process.env.VUE_APP_API_CLIENT_ID,
+                    client_secret: process.env.VUE_APP_API_CLIENT_SECRET,
+                    redirect_uri: process.env.VUE_APP_API_CLIENT_REDIRECT,
+                    code: code,
+                },
+            }).then((res) => {
+                console.log("authorization_code /oauth/token", res);
+                commit("SET_AUTH_BEARER", res.data.access_token);
                 return res;
             });
         },

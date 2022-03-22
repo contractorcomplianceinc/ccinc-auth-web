@@ -16,10 +16,20 @@ const routes = [
         component: () => import(/* webpackChunkName: "login" */ "../views/Login.vue"),
     },
     {
-      path: "/authorize",
-      name: "Authorize",
-      component: () => import(/* webpackChunkName: "login" */ "../views/Authorize.vue"),
-  },
+        path: "/authorize",
+        name: "Authorize",
+        component: () => import(/* webpackChunkName: "authorize" */ "../views/Authorize.vue"),
+    },
+    {
+        path: "/callback",
+        name: "callback",
+        component: () => import(/* webpackChunkName: "callback" */ "../views/Authorize.vue"),
+    },
+    {
+        path: "/user",
+        name: "User",
+        component: () => import(/* webpackChunkName: "user" */ "../views/User.vue"),
+    },
 ];
 
 const router = new VueRouter({

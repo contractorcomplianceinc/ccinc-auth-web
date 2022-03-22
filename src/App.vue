@@ -10,21 +10,17 @@
             <!-- Stuff after -->
             <v-btn to="/"> Home </v-btn>
 
-            <v-btn to="/login"> Login </v-btn>
+            <!-- <v-btn to="/login"> Login </v-btn> -->
+
+            <v-btn to="/authorize"> Authorize </v-btn>
+
+            <v-btn to="/user"> User </v-btn>
         </v-app-bar>
 
         <v-main>
-            <!-- <v-btn @click="currentUser()"> Current User Info </v-btn>
-
-            <v-btn @click="$store.dispatch('OAUTH_AUTHORIZE')">Authorize</v-btn>
-
-            <v-btn @click="oauthToken()">OAuth Token</v-btn>
-
-            <v-btn @click="$store.dispatch('OAUTH_CLIENTS')">OAuth Clients</v-btn> -->
-
             <router-view />
 
-            <ResponsesTable />
+            <ResponsesTable class="py-10"/>
         </v-main>
     </v-app>
 </template>
