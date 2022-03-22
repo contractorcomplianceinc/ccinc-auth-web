@@ -23,7 +23,7 @@ const routes = [
     {
         path: "/callback",
         name: "callback",
-        component: () => import(/* webpackChunkName: "callback" */ "../views/Authorize.vue"),
+        component: () => import(/* webpackChunkName: "callback" */ "../views/Callback.vue"),
     },
     {
         path: "/user",

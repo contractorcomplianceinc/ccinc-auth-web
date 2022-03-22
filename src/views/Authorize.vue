@@ -11,11 +11,19 @@
         <v-btn @click="getToken()">Get Token</v-btn>
 
         <v-dialog v-model="showAuthDialog">
-            <v-card height="50em">
+            <v-card>
                 <v-card-title>
                     <h2>Authorize</h2>
+                    <p>
+                        {{ $store.getters.authUrl }}
+                    </p>
                 </v-card-title>
-                <iframe id="authIFrame" :src="$store.getters.authUrl" width="100%" height="100%"/>
+                <div style="height: 30em">
+                    <iframe id="authIFrame" :src="$store.getters.authUrl" width="100%" height="100%" />
+                </div>
+                <v-card-actions>
+                    <v-btn @click="sendDataToIFrame()">Extract Code from iFrame</v-btn>
+                </v-card-actions>
             </v-card>
         </v-dialog>
 
@@ -35,6 +43,7 @@ export default {
     data() {
         return {
             showAuthDialog: false,
+            hasListener: false,
             data: {},
         };
     },
@@ -43,7 +52,6 @@ export default {
             this.showAuthDialog = true;
         },
         getParams() {
-            console.debug("getParams", this.$route.query);
             let code = this.$route.query.code;
             this.data = {
                 ...this.data,
@@ -58,9 +66,54 @@ export default {
                 };
             });
         },
+        sendDataToIFrame() {
+            // var popup = document.getElementById("authIFrame");
+            var popup = window.frames[0];
+            var targetUrl = "http://localhost:8081";
+            // var targetUrl = "https://api.local.contractorcompliance.io";
+
+            // When the popup has fully loaded, if not blocked by a popup blocker:
+
+            // This does nothing, assuming the window hasn't changed its location.
+            // popup.postMessage("The user is 'bob' and the password is 'secret'", targetUrl);
+
+            // This will successfully queue a message to be sent to the popup, assuming
+            // the window hasn't changed its location.
+            popup.postMessage("get-code", targetUrl);
+        },
+        registerListener() {
+            if (!this.hasListener) {
+                console.log("Registering message event listener - Authorize");
+                window.addEventListener(
+                    "message",
+                    (event) => {
+                        let expectedOrigin = "http://localhost:8081";
+
+                        // Do we trust the sender of this message?
+                        if (event.origin !== expectedOrigin) {
+                            console.debug(
+                                "event.origin did not match expected source. Returning",
+                                event.origin,
+                                expectedOrigin
+                            );
+                            return;
+                        }
+
+                        if (event.data.code != null) {
+                            this.data.code = event.data.code;
+                            this.$store.commit("SET_AUTH_BEARER", event.data.code);
+                            // this.$router.push("user");
+                        }
+                    },
+                    false
+                );
+                this.hasListener = true;
+            }
+        },
     },
     mounted() {
         this.getParams();
+        this.registerListener();
     },
     watch: {
         "$route.query": {

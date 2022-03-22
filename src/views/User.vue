@@ -36,7 +36,6 @@ export default {
                 path: "v2.0/api/users/current"
             })
             .then(res => {
-                console.log("getUser", res);
                 this.user = res.data;
             })
         }
