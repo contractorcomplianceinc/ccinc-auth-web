@@ -19,19 +19,15 @@
 
         <v-main>
             <router-view />
-
-            <ResponsesTable class="py-10"/>
         </v-main>
     </v-app>
 </template>
 
 <script>
-import ResponsesTable from "@/components/debugging/ResponsesTable";
 export default {
     name: "App",
 
     components: {
-        ResponsesTable
     },
 
     data: () => ({

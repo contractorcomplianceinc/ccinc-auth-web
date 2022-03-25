@@ -2,9 +2,9 @@
     <div>
         <h1>Callback</h1>
         <p>
-            {{ data }}
+            You can close this window now!
         </p>
-        <v-btn @click="sendPostMessage()">Click</v-btn>
+        <!-- <v-btn @click="sendPostMessage()">Click</v-btn> -->
     </div>
 </template>
 
@@ -22,6 +22,7 @@ export default {
     mounted() {
         this.data = this.$route.query;
         this.registerListener();
+        this.sendPostMessage();
     },
 
     methods: {
@@ -62,7 +63,7 @@ export default {
                         }
                     }
                 } else {
-                    console.info("Message Event was null - no messages returned");
+                    console.debug("Callback - Message Event was null - no messages returned");
                 }
             },
             1000,
@@ -72,6 +73,12 @@ export default {
             }
         ),
     },
+
+    watch: {
+        "$route.query.code": function(){
+            this.sendPostMessage();
+        }
+    }
 };
 </script>
 
