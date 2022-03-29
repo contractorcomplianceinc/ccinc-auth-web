@@ -1,82 +1,18 @@
 <template>
-    <div id="callback">
-    </div>
+    <div id="callback"></div>
 </template>
 
 <script>
-import _ from "lodash";
-
 import CC from "@/services/CC";
 
 export default {
-    // data: () => ({
-    //     data: null,
-    //     messageEvent: null,
-    //     hasListener: false,
-    //     eventName: "message", // Turns out it has to be "message"
-    // }),
-
     mounted() {
-        CC.createCallbackPage();
-    //     this.data = this.$route.query;
-    //     this.registerListener();
-    //     this.sendPostMessage();
+        CC.injectCallback(
+            process.env.VUE_APP_API_CLIENT_ID,
+            process.env.VUE_APP_API_CLIENT_REDIRECT,
+            "https://api.local.contractorcompliance.io/"
+        );
     },
-
-    // methods: {
-    //     registerListener() {
-    //         if (!this.hasListener) {
-    //             console.log("Registering message event listener - Callback");
-    //             window.addEventListener(
-    //                 this.eventName,
-    //                 (event) => {
-    //                     let expectedOrigin = "http://localhost:8081";
-
-    //                     // Do we trust the sender of this message?
-    //                     if (event.origin !== expectedOrigin) {
-    //                         console.debug(
-    //                             "event.origin did not match expected source. Returning",
-    //                             event.origin,
-    //                             expectedOrigin
-    //                         );
-    //                         return;
-    //                     }
-
-    //                     this.messageEvent = event;
-    //                     this.sendPostMessage();
-    //                 },
-    //                 false
-    //             );
-    //             this.hasListener = true;
-    //         }
-    //     },
-    //     sendPostMessage: _.debounce(
-    //         function () {
-    //             if (this.messageEvent) {
-    //                 if (this.messageEvent.data == "get-code") {
-    //                     let code = this.$route.query.code;
-    //                     if (code) {
-    //                         console.log("callback source.postMessage", this.$route.query, this.messageEvent.data);
-    //                         this.messageEvent.source.postMessage(this.$route.query, this.messageEvent.origin);
-    //                     }
-    //                 }
-    //             } else {
-    //                 console.debug("Callback - Message Event was null - no messages returned");
-    //             }
-    //         },
-    //         1000,
-    //         {
-    //             leading: true,
-    //             trailing: false,
-    //         }
-    //     ),
-    // },
-
-    // watch: {
-    //     "$route.query.code": function(){
-    //         this.sendPostMessage();
-    //     }
-    // }
 };
 </script>
 
