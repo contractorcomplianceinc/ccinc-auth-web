@@ -232,7 +232,7 @@ var CC = {
                 let token = res.data.access_token;
                 axios.defaults.headers.common["Authorization"] = "Bearer " + token;
                 axios.defaults.headers.common["X-XSRF-TOKEN"] = token;
-                return res;
+                return token;
             });
         } else {
             // console.warn("apiGetToken: Missing Parameter", params);
