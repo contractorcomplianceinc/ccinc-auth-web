@@ -27,8 +27,8 @@ sequenceDiagram
         Callback->>js: CC.injectCallback(...)
 
         User->>A: Closes window
-        A->>C: CC.postMessageGetCode()
-        C-->>A: {code: ...}
+        A->>Callback: CC.postMessageGetCode()
+        Callback-->>A: {code: ...}
         A->>js: CC.apiGetToken()
         js->>API: /oauth/token?code=...
         js-->>A: token (Authorization: Bearer {token})
