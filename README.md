@@ -87,8 +87,7 @@ The client will need 2 pages: The Authorization page, and Callback page.
 To setup the authorization page, you will need to have an element with the id `callback-iframe` located inside of your dialog window.
 
 ```html
-<div style="height: 30em" id="callback-iframe">
-</div>
+<div style="height: 30em" id="callback-iframe"></div>
 ```
 
 When the page loads, run the following javascript. This will inject an iframe window to complete the authentication and authorization.
