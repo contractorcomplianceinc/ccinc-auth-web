@@ -47,7 +47,7 @@ curl --location --request GET "https://api.contractorcompliance.io/oauth/authori
 TODO: Write this section
 </mark>
 
-## Server Setup {#server-setup}
+## Server Setup
 
 In order to setup the API, we need to create a passport client on the server. Run the following command to create the client:
 
