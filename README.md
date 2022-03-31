@@ -113,7 +113,13 @@ CC.postMessageGetCode();
 
 ### Callback Page
 
-The callback page is the page that the API will redirect the user to inside the iframe. This page should run a javascript command, and tell the user that they can close the dialog window now.
+The callback page is the page that the API will redirect the user to inside the iframe. This page should have an element with the id `callback`, run a javascript command, and tell the user that they can close the dialog window now.
+
+Here is a sample element with the id `callback`.
+
+```html
+<div id="callback"></div>
+```
 
 Run this code when the callback page loads:
 
