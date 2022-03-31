@@ -33,7 +33,7 @@ You will need to pass in the following url params:
 }
 ```
 
-```
+```bash
 curl --location --request GET "https://api.contractorcompliance.io/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code&scope=*&state={state}"
 ```
 
@@ -43,9 +43,21 @@ curl --location --request GET "https://api.contractorcompliance.io/oauth/authori
 
 #### /oauth/token
 
-<mark style="background-color:red">
-TODO: Write this section
-</mark>
+Once the code is obtained from the `/oauth/authorize` endpoint, the code needs to be used to obtain the Authorization Bearer token at `/oauth/token`.
+
+You will need to make a `POST` request to the following endpoint:
+
+```bash
+curl --location --request POST "api.contractorcompliance.io/oauth/token" \
+    --header "Accept: application/json" \
+    --form "client_secret=\"{client_secret}\"" \
+    --form "client_id=\"{client_id}\"" \
+    --form "grant_type=\"client_credentials\"" \
+    --form "scope=\"*\""
+```
+
+* `client_id`: The ID number obtained when setting up the new `passport:client`. See [Server Setup](#server-setup).
+* `client_secret`: The secret string obtained when setting up the `passport:client`. See [Server Setup](#server-setup).
 
 ## Server Setup
 
