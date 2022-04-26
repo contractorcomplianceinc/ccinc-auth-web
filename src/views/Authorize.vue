@@ -36,7 +36,7 @@ export default {
                 process.env.VUE_APP_API_CLIENT_ID,
                 process.env.VUE_APP_API_CLIENT_SECRET,
                 process.env.VUE_APP_API_CLIENT_REDIRECT,
-                "https://api.local.contractorcompliance.io/"
+                "https://api.local.cc.io/"
             );
         },
         closeDialog(){

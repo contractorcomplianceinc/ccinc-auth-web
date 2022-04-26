@@ -1,5 +1,5 @@
 <template>
-    <div id="callback"></div>
+    <div id="callback">Great success</div>
 </template>
 
 <script>
@@ -10,7 +10,7 @@ export default {
         CC.injectCallback(
             process.env.VUE_APP_API_CLIENT_ID,
             process.env.VUE_APP_API_CLIENT_REDIRECT,
-            "https://api.local.contractorcompliance.io/"
+            "https://api.local.cc.io/"
         );
     },
 };

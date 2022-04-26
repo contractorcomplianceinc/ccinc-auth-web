@@ -59,15 +59,16 @@ var CC = {
         let iframe = document.createElement("iframe");
         iframe.src = this.authorizeUrl(clientId, clientRedirectUrl, apiUrl);
         iframe.style = "width:100%; height:100%";
-        iframe.onload = this.postMessageGetCode();
         element.appendChild(iframe);
+        document.getElementById(this.iFrameElementId).onload = this.postMessageGetCode();
     },
 
     /**
      * Generates the authorize URL
      */
     authorizeUrl: function (clientId, clientRedirectUrl, apiUrl) {
-        let path = "oauth/authorize";
+        //let path = "oauth/authorize";
+        let path = "thirdPartyLogin";
 
         let params = {
             client_id: clientId,
@@ -104,8 +105,9 @@ var CC = {
 
     registerListenerGetCode: function () {
         window.addEventListener(
-            "message",
+            "get-code",
             (event) => {
+                console.log('yea it registerListenerGetCode');
                 // Do we trust the sender of this message?
                 if (event.origin !== parent.origin) {
                     // console.debug("event.origin did not match expected source", {
@@ -127,6 +129,7 @@ var CC = {
     // ===== Callback Page ===== //
 
     injectCallback: function (clientId, clientRedirectUrl, apiUrl = "https://api.contractorcompliance.io/") {
+        console.log('i made it here');
         this.injectCallbackListener();
     },
 
@@ -135,7 +138,7 @@ var CC = {
      */
     injectCallbackListener: function () {
         let element = document.getElementById(this.callbackElementId);
-
+        console.log('about to callback');
         if (!element) {
             console.warn("An element with the id '" + this.callbackElementId + "' is needed");
             throw new Error("Element '" + this.callbackElementId + "' not found");
@@ -154,6 +157,7 @@ var CC = {
             window.addEventListener(
                 "message",
                 (event) => {
+                    console.log('yea it registerListenerPostCode');
                     // Do we trust the sender of this message?
                     if (event.origin !== parent.origin) {
                         console.debug("event.origin did not match expected source", {
@@ -226,7 +230,7 @@ var CC = {
             redirect_uri: this.redirectUrl,
             code: this.code,
         };
-
+        console.log('did i come here to get the token');
         if (this.code && this.clientId && this.clientSecret && this.redirectUrl) {
             return axios.post(url, params).then((res) => {
                 let token = res.data.access_token;
